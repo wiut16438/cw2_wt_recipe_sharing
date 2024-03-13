@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  .container-manual.mt-3
+    h1 Recipes
+    form(action="/recipes" method="get")
+      .row
+        .col-4
+          input.form-control(name="category" placeholder="Filter by category")
+        .col-4
+          input.form-control(name="popularity" type="number" placeholder="Filter by popularity")
+        .col-4
+          button.filter-btn(type="submit") Filter
+    if recipes
+      .recipes-row 
+        each recipe in recipes 
+          .recipe-card 
+            .card-header 
+              p.recipe-title= recipe.title 
+              p.recipe-category= recipe.category
+
+            .card-body 
+              .rating-system
+              - let maxRating = 5;
+              - for (let i = 0; i < maxRating; i++)
+                if i < recipe.popularity
+                  span.star-filled ★
+                else
+                  span.star-empty ☆
+            .card-footer
+              a.details-btn(href="/recipes/" + recipe.id) Read More
+    else
+      p No recipes found.

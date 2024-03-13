@@ -1,23 +1,12 @@
 extends layout
 
 block content
-  .container.mt-3
-    h1 Recipes
-    form(action="/recipes" method="get")
-      .row
-        .col-4
-          input.form-control(name="category" placeholder="Filter by category")
-        .col-4
-          input.form-control(name="popularity" type="number" placeholder="Filter by popularity")
-        .col-4
-          button.btn.btn-primary(type="submit") Filter
-    if recipes
-      ul.list-group.mt-3
-        each recipe in recipes
-          li.list-group-item
-            h5= recipe.title
-            p= recipe.category
-            p= "Popularity: " + recipe.popularity
-            a.btn.btn-primary(href="/recipes/" + recipe.id) View Details
-    else
-      p No recipes found.
+  .hero-section
+    .container-manual.home-container
+      .home-content
+        h1 Welcome to Recipe Sharing Platform
+        p Dive into an endless sea of mouth-watering recipes from around the globe, shared by a community of passionate cooks and culinary enthusiasts just like you. 
+        p.home-requirement This web application was created to fulfill Web Technology module’s requirements and does not represent an actual company or service
+        a.start-btn(href="/recipes") Start Reading
+      .home-image 
+        img.home-img(src="https://st3.depositphotos.com/13324256/17303/i/450/depositphotos_173034766-stock-photo-woman-writing-down-recipe.jpg")

@@ -8,6 +8,7 @@ const cors = require("cors");
 const methodOverride = require("method-override");
 
 const recipesRouter = require("./routes/recipes");
+const homeRouter = require("./routes/home");
 
 const app = express();
 
@@ -24,9 +25,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/recipes", recipesRouter);
 
-app.use("/", (req, res) => {
-  res.redirect("/recipes");
-});
+app.use("/", homeRouter);
 
 const port = process.env.PORT || 3000;
 

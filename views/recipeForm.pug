@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  .container.mt-5
+  .container-manual.mt-5
     h1 #{recipe && recipe.id ? 'Edit' : 'Add'} Recipe
     form#recipeForm(action=recipe && recipe.id ? `/recipes/${recipe.id}?_method=PATCH` : "/recipes" method="post" onsubmit="return false;")
       .form-group

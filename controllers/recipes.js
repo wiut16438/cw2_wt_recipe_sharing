@@ -7,7 +7,7 @@ const getAllRecipes = async (req, res) => {
   try {
     const { category, popularity } = req.query;
     const recipes = await recipeService.getAll({ category, popularity });
-    res.render("index", { recipes });
+    res.render("recipes", { recipes });
   } catch (error) {
     res.status(404).json({ message: "Recipes not found" });
   }
