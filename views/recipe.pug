@@ -1,18 +1,34 @@
 extends layout
 
 block content
-  .container-manual.mt-3
-    h1= recipe.title
-    h2= "Category: " + recipe.category
-    h3= "Popularity: " + recipe.popularity
-    h4 Ingredients
-    ul
-      each ingredient in recipe.ingredients
-        li= ingredient
-    h4 Steps
-    ol
-      each step in recipe.steps
-        li= step
-    a.btn.btn-primary(href="/recipes/" + recipe.id + "/edit") Edit Recipe
-    form(action="/recipes/" + recipe.id + "?_method=DELETE" method="post" style="display: inline;")
-      button.btn.btn-danger(type="submit") Delete Recipe
+  .container-manual.mt-3.recipe-details
+    .recipe-desc 
+      .recipe-popularity
+        h3.recipe-rating-title Rating
+        .recipe-stars
+        - let maxRating = 5;
+        - for (let i = 0; i < maxRating; i++)
+          if i < recipe.popularity
+            span.star-filled ★
+          else
+            span.star-empty ☆
+
+      h1.recipe-details-title= "Name: " + recipe.title
+      h2.recipe-details-category= "Category: " + recipe.category
+      .recipe-items
+        .recipe-col
+          h4 Ingredients
+          ul
+            each ingredient in recipe.ingredients
+              li= ingredient
+        .recipe-col
+          h4 Steps
+          ol
+            each step in recipe.steps
+              li= step
+      .recipe-controls
+        a.edit-btn(href="/recipes/" + recipe.id + "/edit") Edit Recipe
+        form(action="/recipes/" + recipe.id + "?_method=DELETE" method="post" style="display: inline;")
+          button.delete-btn(type="submit") Delete Recipe
+    .recipe-image 
+      img(src="https://thewoksoflife.com/wp-content/uploads/2020/12/cantonese-steamed-fish-5.jpg" alt="Recipe Instructions & Steps")
