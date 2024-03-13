@@ -12,3 +12,16 @@
 .form-controllers {
   text-align: right;
 }
+
+#notificationContainer {
+  display: none; /* Hidden by default */
+  background-color: #28a745; /* Bootstrap success color */
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 15px; /* Adjust based on your layout */
+}
+
+.show-notification {
+  display: block; /* Show the container */
+}
