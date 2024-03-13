@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .container.mt-3
+    h1= recipe.title
+    h2= "Category: " + recipe.category
+    h3= "Popularity: " + recipe.popularity
+    h4 Ingredients
+    ul
+      each ingredient in recipe.ingredients
+        li= ingredient
+    h4 Steps
+    ol
+      each step in recipe.steps
+        li= step
+    a.btn.btn-primary(href="/recipes/" + recipe.id + "/edit") Edit Recipe
+    form(action="/recipes/" + recipe.id + "?_method=DELETE" method="post" style="display: inline;")
+      button.btn.btn-danger(type="submit") Delete Recipe

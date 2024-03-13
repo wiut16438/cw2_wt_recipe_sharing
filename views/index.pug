@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  .container.mt-3
+    h1 Recipes
+    form(action="/recipes" method="get")
+      .row
+        .col-4
+          input.form-control(name="category" placeholder="Filter by category")
+        .col-4
+          input.form-control(name="popularity" type="number" placeholder="Filter by popularity")
+        .col-4
+          button.btn.btn-primary(type="submit") Filter
+    if recipes
+      ul.list-group.mt-3
+        each recipe in recipes
+          li.list-group-item
+            h5= recipe.title
+            p= recipe.category
+            p= "Popularity: " + recipe.popularity
+            a.btn.btn-primary(href="/recipes/" + recipe.id) View Details
+    else
+      p No recipes found.
