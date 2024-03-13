@@ -53,7 +53,7 @@ This application uses the following dependencies:
 
 ## Project Structure
 
-/Root
+```/Root
 ├── app.js
 ├── package.json
 ├── .gitignore
@@ -90,7 +90,7 @@ This application uses the following dependencies:
 ├── navbar.pug
 ├── recipe.pug
 ├── recipeForm.pug
-└── recipes.pug
+└── recipes.pug```
 
 - `controllers`: Logic to handle incoming requests and render responses.
 - `data`: Contains a json file to store data.
