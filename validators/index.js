@@ -17,7 +17,9 @@ const addRecipeValidation = () => {
     body("steps").notEmpty().withMessage("Steps must not be empty"),
     body("popularity")
       .notEmpty()
-      .withMessage("Popularity rating must not be empty"),
+      .withMessage("Popularity rating must not be empty")
+      .isInt({ min: 1, max: 5 })
+      .withMessage("Popularity rating must be between 1 and 5"),
   ];
 };
 
@@ -54,7 +56,9 @@ const updateRecipeValidation = () => {
     body("steps").notEmpty().withMessage("Steps must not be empty"),
     body("popularity")
       .notEmpty()
-      .withMessage("Popularity rating must not be empty"),
+      .withMessage("Popularity rating must not be empty")
+      .isInt({ min: 1, max: 5 })
+      .withMessage("Popularity rating must be between 1 and 5"),
   ];
 };
 

@@ -1,39 +1,50 @@
 extends layout
 
 block content
-  .container-manual.mt-5
+  .container-manual.mt-5.form-container
     h1 #{recipe && recipe.id ? 'Edit' : 'Add'} Recipe
-    form#recipeForm(action=recipe && recipe.id ? `/recipes/${recipe.id}?_method=PATCH` : "/recipes" method="post" onsubmit="return false;")
+    form#recipeForm.recipe-form(action=recipe && recipe.id ? `/recipes/${recipe.id}?_method=PATCH` : "/recipes" method="post" onsubmit="submitForm(); return false;")
       .form-group
         label(for="title" class="form-label") Title
         input(type="text" class="form-control" id="title" name="title" value=recipe ? recipe.title : '')
-
 
       .form-group
         label(for="category" class="form-label") Category
         input(type="text" class="form-control" id="category" name="category" value=recipe ? recipe.category : '')
 
       .form-group
-        label(for="popularity" class="form-label") Popularity
-        input(type="number" class="form-control" id="popularity" name="popularity" value=recipe ? recipe.popularity : '')
-
-
-      .form-group
         label(for="ingredients" class="form-label") Ingredients (comma separated)
         input(type="text" class="form-control" id="ingredients" name="ingredients" value=recipe && recipe.ingredients ? recipe.ingredients.join(", ") : '')
-
 
       .form-group
         label(for="steps" class="form-label") Steps (comma separated)
         input(type="text" class="form-control" id="steps" name="steps" value=recipe && recipe.steps ? recipe.steps.join(", ") : '')
 
+      .form-group
+        label(for="popularity" class="form-label") Popularity
+        input(type="number" class="form-control" id="popularity" name="popularity" value=recipe ? recipe.popularity : '')
 
-      button.btn.btn-success(type="submit" onclick="submitForm()") #{recipe ? 'Update' : 'Add'}
-      span &nbsp;
-      button.btn.btn-primary(type="button" onclick="window.location.href='/recipes'") Back to list
-
+      .form-controllers
+        button.btn.btn-success(type="button" onclick="submitForm()") #{recipe && recipe.id ? 'Update' : 'Add'}
+        span &nbsp;
+        button.btn.btn-primary(type="button" onclick="window.location.href='/recipes'") Back to list
 
   script.
+    function clearErrorMessage(inputElement) {
+      const nextSibling = inputElement.nextSibling;
+      if (nextSibling && nextSibling.classList.contains('error-message')) {
+        nextSibling.remove(); // Remove the error message
+      }
+      inputElement.classList.remove('is-invalid'); // Remove the invalid input class
+    }
+
+    function setupInputEventListeners() {
+      document.querySelectorAll('.form-control').forEach(inputElement => {
+        inputElement.addEventListener('input', () => {
+          clearErrorMessage(inputElement);
+        });
+      });
+    }
     function submitForm() {
       const recipeData = {
         title: document.getElementById('title').value,
@@ -43,8 +54,8 @@ block content
         popularity: document.getElementById('popularity').value,
       };
 
-      const url = "#{recipe ? `/recipes/${recipe.id}` : '/recipes'}";
-      const method = "#{recipe ? 'PATCH' : 'POST'}";
+      const url = "#{recipe && recipe.id ? `/recipes/` + recipe.id : '/recipes'}";
+      const method = "#{recipe && recipe.id ? 'PATCH' : 'POST'}";
 
       fetch(url, {
         method: method,
@@ -54,23 +65,30 @@ block content
         },
         body: JSON.stringify(recipeData),
       })
-      .then(response => {
-        if (!response.ok) {
-          // If response is not ok, parse the JSON body to get errors
-          response.json().then(data => {
-            const errorMessages = data.errors.map(err => err.msg).join("\n");
-            alert("Validation errors:\n" + errorMessages);
+      .then(response => response.json().then(data => ({ status: response.status, body: data })))
+      .then(obj => {
+        if (obj.status !== 200) {
+          // Clear previous errors
+          document.querySelectorAll('.error-message').forEach(el => el.remove());
+          document.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
+
+          // Display new errors
+          obj.body.errors.forEach(error => {
+            const element = document.getElementById(error.path);
+            const errorMessage = document.createElement('div');
+            errorMessage.textContent = error.msg;
+            errorMessage.classList.add('error-message', 'text-danger');
+            element.classList.add('is-invalid');
+            element.parentNode.insertBefore(errorMessage, element.nextSibling);
           });
         } else {
-          // Handle success case
-          return response.json().then(data => {
-            alert('Success!');
-            window.location.href = "/recipes";
-          });
+          alert('Success!');
+          window.location.href = "/recipes";
         }
       })
       .catch(error => {
-        // Handle network error
-        alert("Network error or cannot connect to the server");
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
       });
+      setupInputEventListeners();
     }

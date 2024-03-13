@@ -1,0 +1,14 @@
+.recipe-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-container {
+  padding-right: 100px;
+  padding-left: 100px;
+}
+
+.form-controllers {
+  text-align: right;
+}
