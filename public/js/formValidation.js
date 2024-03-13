@@ -1,9 +1,9 @@
 function clearErrorMessage(inputElement) {
   const nextSibling = inputElement.nextSibling;
   if (nextSibling && nextSibling.classList.contains("error-message")) {
-    nextSibling.remove(); // Remove the error message
+    nextSibling.remove();
   }
-  inputElement.classList.remove("is-invalid"); // Remove the invalid input class
+  inputElement.classList.remove("is-invalid");
 }
 
 function setupInputEventListeners() {
@@ -45,7 +45,6 @@ function submitForm() {
     )
     .then((obj) => {
       if (obj.status !== 200) {
-        // Clear previous errors
         document
           .querySelectorAll(".error-message")
           .forEach((el) => el.remove());
@@ -53,7 +52,6 @@ function submitForm() {
           .querySelectorAll(".form-control")
           .forEach((el) => el.classList.remove("is-invalid"));
 
-        // Display new errors
         obj.body.errors.forEach((error) => {
           const element = document.getElementById(error.path);
           const errorMessage = document.createElement("div");
