@@ -1,6 +1,4 @@
 const recipeService = require("../services/dbService");
-const recipeSchema = require("../validators/recipeSchema");
-const Joi = require("joi");
 const { validationResult } = require("express-validator");
 
 const getAllRecipes = async (req, res) => {
